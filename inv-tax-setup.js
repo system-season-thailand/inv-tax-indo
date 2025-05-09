@@ -141,8 +141,8 @@ function openPdfDownloadBox() {
 
         // Build PDF name
         let pdfName = `Inv Tax ${invNumber}`;
-        if (revSpan) pdfName += `${revSpan} `;
-        pdfName += `${clientName}`;
+        if (revSpan) pdfName += `${revSpan}`;
+        pdfName += ` ${clientName}`;
 
         // Set file name
         document.getElementById('pdf_file_name_input_id').value = pdfName;
