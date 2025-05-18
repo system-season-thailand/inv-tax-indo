@@ -283,14 +283,14 @@ function processInvoiceData(data) {
 
 
             // Regex to find SAR, USD, or IDR followed by a number
-            const match = lastLine.match(/(SAR|USD|IDR|RP)\s*([\d,]+)/i);
+            const match = lastLine.match(/(SAR|USD|IDR|RP)\s*([\d.,]+)/i);
 
 
 
 
 
             if (match) {
-                total = match[2].replace(/,/g, '').trim(); // Remove commas and trim
+                total = match[2].replace(/[.,]/g, '').trim(); // Remove commas and points and trim
             }
 
 
@@ -834,9 +834,9 @@ function processInvoiceData(data) {
 
         // Format total number with commas (after minus 20 from the number as the tax)
         let tax = 0;
-        if (total > 10000) {
+        if (total > 7000) {
             tax = 30;
-        } else if (total >= 5000 && total <= 10000) {
+        } else if (total >= 4000 && total <= 7000) {
             tax = 20;
         } else {
             tax = 10;
