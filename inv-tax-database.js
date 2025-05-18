@@ -15,13 +15,6 @@ async function sendDataToSupabase() {
     const formattedName = revNumber === '' ? `${invNumber} ${guestName}` : `${invNumber}${revNumber} ${guestName}`;
 
 
-    /* Increase the number of the rev in case there was a value in the rev element */
-    if (document.getElementById("current_used_rev_number_p_id").innerText.includes('-(')) {
-        /* Set Rev in the inv number */
-        let revNumValue = document.getElementById("store_supabase_current_inv_tax_rev_number_id");
-        const currentStoredRev = parseInt(revNumValue.innerText, 10) || 0;
-        revNumValue.innerText = `${currentStoredRev + 1}`;
-    }
 
 
 
@@ -29,14 +22,16 @@ async function sendDataToSupabase() {
     const htmlContent = cleanHTML(document.getElementById("whole_invoice_company_section_id").innerHTML);
 
 
+    /* Get the found month in the inv company data */
+    const lastFoundMonthName = printLatestFullMonthName();
+
+
+
+
     /* Get the user current month na dyear to store it in the supabase for later use when deleteing data */
     const currentDate = new Date();
 
-    const inv_tax_created_date_options = { month: 'long', year: 'numeric' };
-    const currentUserDate = currentDate.toLocaleString('en-US', inv_tax_created_date_options);
-
-
-    const inv_tax_current_user_date_options = {
+    const inv_company_current_user_date_options = {
         weekday: 'long',     // Optional: "Monday", "Tuesday", etc.
         year: 'numeric',
         month: 'long',
@@ -46,7 +41,7 @@ async function sendDataToSupabase() {
         second: '2-digit',
         hour12: true         // Use false if you prefer 24-hour format
     };
-    const currentUserFullDate = currentDate.toLocaleString('en-US', inv_tax_current_user_date_options);
+    const currentUserFullDate = currentDate.toLocaleString('en-US', inv_company_current_user_date_options);
 
 
 
@@ -64,6 +59,7 @@ async function sendDataToSupabase() {
             return;
         }
 
+
         if (existing) {
             const { data, error } = await supabase
                 .from('inv_tax_indo')
@@ -73,13 +69,25 @@ async function sendDataToSupabase() {
 
             if (error) console.error("❌ Update failed:", error);
             else console.log("✅ Updated invoice content only:", data[0]);
+
+
         } else {
+
+            /* Increase the number of the rev in case there was a value in the rev element */
+            if (document.getElementById("current_used_rev_number_p_id").innerText.includes('-(')) {
+                /* Set Rev in the inv number */
+                let revNumValue = document.getElementById("store_supabase_current_inv_tax_rev_number_id");
+                const currentStoredRev = parseInt(revNumValue.innerText, 10) || 0;
+                revNumValue.innerText = `${currentStoredRev + 1}`;
+            }
+
+
             const { data, error } = await supabase
                 .from('inv_tax_indo')
                 .insert([{
                     name: formattedName,
                     inv_tax_indo_content: htmlContent,
-                    inv_tax_created_date: currentUserDate,
+                    inv_tax_last_found_month_name: lastFoundMonthName,
                     inv_tax_user_current_date: currentUserFullDate
                 }])
                 .select();
