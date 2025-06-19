@@ -63,9 +63,14 @@ async function sendDataToSupabase() {
         if (existing) {
             const { data, error } = await supabase
                 .from('inv_tax_indo')
-                .update({ inv_tax_indo_content: htmlContent })
+                .update({
+                    inv_tax_indo_content: htmlContent,
+                    inv_tax_last_found_month_name: lastFoundMonthName,
+                    inv_tax_user_current_date: currentUserFullDate
+                })
                 .eq('name', formattedName)
-                .select(); // optional: to return the updated row
+                .select();
+
 
             if (error) console.error("❌ Update failed:", error);
             else console.log("✅ Updated invoice content only:", data[0]);
