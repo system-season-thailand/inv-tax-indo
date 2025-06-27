@@ -977,11 +977,11 @@ function processInvoiceData(data) {
         // Format total number with commas (after minus 20 from the number as the tax)
         let tax = 0;
         if (total > 7000) {
-            tax = 30;
+            tax = 50;
         } else if (total >= 4000 && total <= 7000) {
-            tax = 20;
+            tax = 40;
         } else {
-            tax = 10;
+            tax = 25;
         }
         const formattedTotal = Number(total - tax).toLocaleString();
 
