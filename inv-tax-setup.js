@@ -283,7 +283,9 @@ function processInvoiceData(data) {
 
 
 
-    document.getElementById('current_used_inv_tax_p_id').innerText = invoiceNo;
+    // Always format invoice number to 4 digits with leading zeros
+    const formattedInvoiceNo = invoiceNo.padStart(4, "0");
+    document.getElementById('current_used_inv_tax_p_id').innerText = formattedInvoiceNo;
 
 
 
@@ -297,7 +299,7 @@ function processInvoiceData(data) {
 
     /* Store the values in the google sheet for later refrence (when importing) */
     document.getElementById('store_supabase_guest_name').innerText = clientName;
-    document.getElementById('store_supabase_inv_number').innerText = invoiceNo;
+    document.getElementById('store_supabase_inv_number').innerText = formattedInvoiceNo;
 
 
 
@@ -993,7 +995,7 @@ function processInvoiceData(data) {
         rowDiv.className = "invoice_company_row_div_class last_invoice_company_row_div_class";
         rowDiv.innerHTML = `
             <div>
-                <p class="duplicate_this_element_class">Total</p>
+                <p class="duplicate_this_element_class">TOTAL</p>
             </div>
             <div id="inv_tax_total_price_div_id" style="border-right: 0.5px solid black;">
                 <p style="padding: 5px 0">SAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${formattedTotal}</p>
