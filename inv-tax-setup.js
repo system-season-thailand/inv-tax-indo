@@ -300,10 +300,10 @@ function processInvoiceData(data) {
 
 
     // Place the values in the inv tax content
-    if(travelAgency.toUpperCase() === 'RPIBADI'){
+    if (travelAgency.toUpperCase() === 'RPIBADI') {
         document.getElementById('current_used_company_name_p_id').innerText = '';
 
-    }else{
+    } else {
         document.getElementById('current_used_company_name_p_id').innerText = travelAgency;
     }
 
@@ -2043,3 +2043,47 @@ const printLatestFullMonthName = () => {
     console.log("Fallback to Current Month-Year:", fallbackResult);
     return fallbackResult;
 };
+
+
+
+
+
+
+
+
+
+
+// Make the invoice company logo image clickable to change its source
+(function setupLogoImagePicker() {
+    const logoImg = document.getElementById('inv_comp_logo');
+    if (!logoImg) return;
+
+    // Style cursor to indicate clickability
+    logoImg.style.cursor = 'pointer';
+    logoImg.title = 'Click to change logo';
+
+    // Create a hidden file input
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    // When the image is clicked, trigger the file input
+    logoImg.addEventListener('click', function () {
+        fileInput.value = '';
+        fileInput.click();
+    });
+
+    // When a file is selected, update the image src
+    fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                logoImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+})();
