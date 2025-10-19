@@ -1055,7 +1055,6 @@ function processInvoiceData(data) {
 
         // Format total number with commas (after minus from the number as the tax)
         let tax = 0;
-
         if (total >= 10000) {
             tax = 150;
         } else if (total >= 8000) {
